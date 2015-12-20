@@ -1,4 +1,4 @@
-**This project is still under development**
+**This project is under heavy development**
 
 # django-paralleltests
 A Test Runner for Django that runs tests in parallel.
@@ -20,3 +20,33 @@ To prevent this, we need isolation. Docker.
 ## Idea
 
 Develop a test runner that will run tests in parallel inside an isolated environment (Docker), to avoid collisions.
+
+## Installation
+
+    pip install https://github.com/caioariede/django-paralleltests/archive/master.zip
+
+## Configuration
+
+You must have a `Dockerfile` in place to generate the image to be used.
+
+A Dockerfile example:
+
+    FROM python:2.7
+    ENV PYTHONUNBUFFERED 1
+    ENV PYTHONPATH .:$PYTHONPATH
+    RUN mkdir /code
+    WORKDIR /code
+    ADD . /code/
+    RUN pip install -r requirements.txt
+
+With this, you can generate a image with the following command:
+
+    docker build -t paralleltest .
+
+Right now, the image name is hardcoded to `paralleltest:latest`.
+
+## Usage
+
+Set `TEST_RUNNER` to `paralleltests.runner.parallel.ParallelRunner` in your `settings.py`.
+
+Then run your tests as usual.
